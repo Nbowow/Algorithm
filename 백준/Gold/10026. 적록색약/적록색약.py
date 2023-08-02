@@ -1,4 +1,4 @@
-#적록색약
+# 적록색약
 import sys, copy
 sys.setrecursionlimit(10**5)
 input = sys.stdin.readline
