@@ -21,9 +21,6 @@ party = []
 for i in range(M):
     party.append(list(map(int, input().split())))
     party[i].pop(0)
-    party[i].sort()
-
-party.sort()
 
 tree = [[] for _ in range(N+1)]
 
