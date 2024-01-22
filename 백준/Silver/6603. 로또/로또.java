@@ -9,7 +9,6 @@ import java.util.StringTokenizer;
 
 public class Main {
     public static int[] lotto;
-    public static int[] visited;
     public static List<Integer> ans;
 
     static void backTracking(int N) {
@@ -20,22 +19,33 @@ public class Main {
         }
 
         for (int i = 0; i < lotto.length; i++) {
-            if (visited[i] == 0) {
-                if (ans.size() == 0) {
-                    visited[i] = 1;
-                    ans.add(lotto[i]);
-                    backTracking(N+1);
-                    visited[i] = 0;
-                    ans.remove(ans.size()-1);
-                }
-                else if(ans.size() != 0 && ans.get(ans.size()-1) < lotto[i]) {
-                    visited[i] = 1;
-                    ans.add(lotto[i]);
-                    backTracking(N+1);
-                    visited[i] = 0;
-                    ans.remove(ans.size()-1);
-                }
+            if (ans.size() == 0) {
+                ans.add(lotto[i]);
+                backTracking(N+1);
+                ans.remove(ans.size()-1);
+            } else if (ans.size() != 0 && ans.get(ans.size()-1) < lotto[i]) {
+                ans.add(lotto[i]);
+                backTracking(N+1);
+                ans.remove(ans.size()-1);
             }
+
+
+//            if (visited[i] == 0) {
+//                if (ans.size() == 0) {
+//                    visited[i] = 1;
+//                    ans.add(lotto[i]);
+//                    backTracking(N+1);
+//                    visited[i] = 0;
+//                    ans.remove(ans.size()-1);
+//                }
+//                else if(ans.size() != 0 && ans.get(ans.size()-1) < lotto[i]) {
+//                    visited[i] = 1;
+//                    ans.add(lotto[i]);
+//                    backTracking(N+1);
+//                    visited[i] = 0;
+//                    ans.remove(ans.size()-1);
+//                }
+//            }
         }
     }
     public static void main(String[] args) throws IOException {
@@ -47,11 +57,9 @@ public class Main {
             if (k == 0) break;
 
             lotto = new int[k];
-            visited = new int[k];
             ans = new ArrayList<>();
             for (int i = 0; i < k; i++) {
                 lotto[i] = Integer.parseInt(st.nextToken());
-                visited[i] = 0;
             }
             backTracking(0);
             System.out.println();
