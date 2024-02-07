@@ -4,11 +4,28 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.StringTokenizer;
 
-class Node {
+/*
+	작성자 : 남보우
+	문제 : [G5] 최소비용 구하기 - 1916번
+	제출 : 2024년 2월 7일
+	결과 : 통과
+	성능 요약 : 메모리 48440KB, 시간 484ms
+	아이디어 : 
+		1. 시작도시(A)에서 인접한 다른 도시들로(B, C) 갈 때 필요한 비용을 구합니다.
+		2. 구한 비용중 가장 비용이 작은 도시로 이동(B)하여 해당도시를 거쳐서 다른 도시로 갈때(C)
+		3. 비용이 더 적다면 해당 값으로 비용을 갱신해줍니다. (다익스트라)
+		4. 1~3을 반복하여 시작도시에서 원하는 도시까지가는데 필요한 최소 비용을 출력합니다.
+*/
+
+//노드를 이용하기 위한 클래스 선언(인덱스 번호(idx) 가중치(w)를 담고 있음)
+class Node1 {
+	// 가고자 하는 도시
 	int idx;
+	
+	// 버스 비용
 	int cost;
 	
-	Node(int idx, int cost) {
+	Node1(int idx, int cost) {
 		this.idx = idx;
 		this.cost = cost;
 	}
@@ -17,7 +34,7 @@ class Node {
 public class Main {
 
 	static int N, M, start, end;
-	static List<List<Node>> bus = new ArrayList<>();
+	static List<List<Node1>> city = new ArrayList<>();
 	static boolean[] visited;
 	static int[] dist;
 	
@@ -48,8 +65,8 @@ public class Main {
 			visited[nodeIdx] = true;
 			
 			// 도시와 연결된 모든 도시에 대해 최소 거리 갱신
-			for (int j=0; j<bus.get(nodeIdx).size(); j++) {
-				Node adjNode = bus.get(nodeIdx).get(j);
+			for (int j=0; j<city.get(nodeIdx).size(); j++) {
+				Node1 adjNode = city.get(nodeIdx).get(j);
 				
 				if (dist[adjNode.idx] > dist[nodeIdx] + adjNode.cost) {
 					dist[adjNode.idx] = dist[nodeIdx] + adjNode.cost;
@@ -67,9 +84,9 @@ public class Main {
 		dist = new int[N+1];
 		M = Integer.parseInt(br.readLine());
 		
-		// 1~N번 버스
+		// 1~N번 도시
 		for (int i=0; i<N+1; i++) {
-			bus.add(new ArrayList<>());
+			city.add(new ArrayList<>());
 		}
 		
 		for (int i=0; i<M; i++) {
@@ -78,7 +95,7 @@ public class Main {
 			int e = Integer.parseInt(st.nextToken());
 			int v = Integer.parseInt(st.nextToken());
 			
-			bus.get(s).add(new Node(e, v));
+			city.get(s).add(new Node1(e, v));
 		}
 		
 		st = new StringTokenizer(br.readLine());
