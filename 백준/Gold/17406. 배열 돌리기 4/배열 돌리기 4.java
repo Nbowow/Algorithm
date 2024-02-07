@@ -16,6 +16,8 @@ import java.util.StringTokenizer;
 		2. 입력받은 연산은 순열을 이용하여 모든 경우의수를 탐색해 '배열A'의 최솟값을 찾았습니다.
 		3. 배열돌리기 연산을 진행할때 하나의 배열을 추가로 잡아서 진행하는 것이 시간복잡도나 공간복잡도 면에서
 			좋지 않은 것 같아 해당 배열에서 rotate 해주는 방법으로 다시 구현해보려고 합니다.
+		<다시 구현 후>
+		4. 3번의 방법으로 
 */
 
 public class Main {
@@ -48,7 +50,7 @@ public class Main {
 			while (n++<K) {
 				for (int i=0; i<permutation.length; i++) {
 					if (n == permutation[i]) {
-						rotate2(oper[i][0], oper[i][1], oper[i][2], oper[i][3]);
+						rotate(oper[i][0], oper[i][1], oper[i][2], oper[i][3]);
 					}
 				}
 			}
@@ -68,7 +70,7 @@ public class Main {
 		}
 	}
 	
-	static void rotate2(int srow, int scol, int lrow, int lcol) {
+	static void rotate(int srow, int scol, int lrow, int lcol) {
 		// 사각형 갯수만큼 반복
 		for (int n=0; n<Math.min(lrow-srow+1, lcol-scol+1)/2; n++) {
 			int t = A[srow+n][scol+n];
@@ -100,42 +102,7 @@ public class Main {
 				A[i-1][scol+n] = t;
 				t = tmp;
 			}
-			
-//			System.out.println("======돌린후======");
-//			printArray();
-		}
-		
-	}
-	
-	static void rotate(int srow, int scol, int lrow, int lcol) {
-		// 사각형 갯수만큼 반복
-		for (int n=0; n<Math.min(lrow-srow+1, lcol-scol+1)/2; n++) {
-			
-			// temp에 ans복사해서 rotate 시켜줌
-			copyArray();
-			
-			// 오른쪽 회전 (마지막 열에서 -1 만큼 빼준 만큼만 반복)
-			for (int j=scol+n; j<=lcol-n-1; j++) {
-				temp[srow+n][j+1] = A[srow+n][j];
-			}
-			
-			// 아래쪽 회전
-			for (int i=srow+n; i<=lrow-n-1; i++) {
-				temp[i+1][lcol-n] = A[i][lcol-n];
-			}
-			
-			// 왼쪽 회전
-			for (int j=lcol-n; j>=scol+n+1; j--) {
-				temp[lrow-n][j-1] = A[lrow-n][j];
-			}
-			
-			// 위쪽 회전
-			for (int i=lrow-n; i>=srow+n+1; i--) {
-				temp[i-1][scol+n] = A[i][scol+n];
-			}
-			
-			// 회전한 결과 값 배열 A에 저장
-			A = temp;
+
 		}
 		
 	}
@@ -175,16 +142,6 @@ public class Main {
 		
 		Collections.sort(ans);
 		System.out.println(ans.get(0));
-//		System.out.println(ans.toString());
-	}
-	
-	static void printArray() {
-		for (int i=0; i<N; i++) {
-			for (int j=0; j<M; j++) {
-				System.out.print(A[i][j] + " ");
-			}
-			System.out.println();
-		}
 	}
 	
 	// temp배열 A배열 참고해서 변경
