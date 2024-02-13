@@ -26,11 +26,11 @@ public class Main {
 			// 오르막길 끝
 			if (ans[i-1] < ans[i]) {
 				isSwap = true;
-//				// i가 맨 마지막 index일 경우
-				if (i == ans.length-1) {
-					swap(i-1, i);
-					break;
-				}
+				// i가 맨 마지막 index일 경우
+//				if (i == ans.length-1) {
+//					swap(i-1, i);
+//					break;
+//				}
 				
 				bindex = i-1;
 				
@@ -72,12 +72,6 @@ public class Main {
 		ans[i] = ans[j];
 		ans[j] = temp;
 	
-	}
-	
-	static void printArray() {
-		for (int i=0; i<N; i++) {
-			System.out.print(ans[i] + " ");
-		}
 	}
 
 }
