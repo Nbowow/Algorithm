@@ -1,29 +1,19 @@
 import java.io.BufferedReader;
 import java.io.InputStreamReader;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 import java.util.StringTokenizer;
-
-import javax.xml.transform.Templates;
 
 public class Main {
 	
 	static boolean isValid;
-	static boolean[] isVisited;
 	static int[][] teams;
 	static int[] t1, t2;
 	static List<Integer> matchTeam = new ArrayList<>();
-	static List<StringBuilder> result = new ArrayList<>();
 	
 	static void backTracking(int matches, int round) {
+		// 이미 검증됐으므로 더이상 bt돌필요 없음
 		if (isValid) return;
-//		for (int i=0; i<6; i++) {
-//			for (int j=0 ; j<3; j++) {
-//				System.out.print(teams[i][j] + " ");
-//			}
-//		}
-//		System.out.println("matches : " + matches + " round : " + round);
 		
 		// 15경기 모두 치뤘으면 가능한 경기 결과
 		if (matches == 15) {
@@ -63,10 +53,6 @@ public class Main {
 		
 	}
 	
-	static void makeTeams() {
-		
-	}
-
 	public static void main(String[] args) throws Exception{
 		BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
 		StringTokenizer st;
@@ -91,7 +77,6 @@ public class Main {
 			
 			// 첫번째 인덱스 : team , 두번째 인덱스 : (0 : 승리, 1 : 무승부, 2 : 패배)
 			teams = new int[6][3];
-			isVisited = new boolean[6];
 			matchTeam = new ArrayList<>();
 			for (int i=0; i<6; i++) {
 				for (int j=0; j<3; j++) {
