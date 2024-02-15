@@ -5,6 +5,18 @@ import java.util.List;
 import java.util.StringTokenizer;
 import static java.lang.Math.abs;
 
+/*
+	@author : 남보우
+	문제 : [SW문제해결 응용] 3일차 - 최적 경로 - 1210번
+	제출 : 2024년 2월 15일
+	결과 : 통과
+	성능 요약 : 메모리 - 22368kb, 시간 - 3333ms
+	아이디어 : 
+		1. N+2크기의 배열을 설정한 후, 0번째 인덱스는 회사, N+1번째 인덱스는 집 좌표를 넣어준다.
+		2. 1~N인덱스를 돌며 나올수 있는 모든 경우의 수를 순열로 구한 후 각각의 거리를 계산해준다.
+		3. 최단경로를 업데이트 해준다.
+*/
+
 public class Solution {
 	
 	static int N, minDistance;
@@ -12,22 +24,15 @@ public class Solution {
 	static boolean[] isVisited;
 	static List<Integer> perm;
 
-	static void dfs(int depth) {
-		// 거리 계산
+	static void dfs(int depth, int bindex, int sum) {
+		if (sum > minDistance) return;
+		
+		// 모든 고객을 다 돌았을 경우 거리 계산
 		if (depth == N) {
-			int distance = 0;
-			// 회사, 첫번째 고객 거리 구함
-			distance += abs(map[0][0] - map[perm.get(0)][0]) + abs(map[0][1] - map[perm.get(0)][1]);
-			
-			for (int i=0; i<perm.size()-1; i++) {
-				// 인덱스 i번째 고객, i+1번째 고객 사이 거리 구함
-				distance += (abs(map[perm.get(i)][0] - map[perm.get(i+1)][0]) + abs(map[perm.get(i)][1] - map[perm.get(i+1)][1]));
-			}
-			
 			// 마지막고객, 집 거리 구함
-			distance += abs(map[N+1][0] - map[perm.get(perm.size()-1)][0]) + abs(map[N+1][1] - map[perm.get(perm.size()-1)][1]); 
+			sum += abs(map[N+1][0] - map[bindex][0]) + abs(map[N+1][1] - map[bindex][1]); 
 			
-			minDistance = Math.min(minDistance, distance);
+			minDistance = Math.min(minDistance, sum);
 			return;
 		}
 		
@@ -35,10 +40,8 @@ public class Solution {
 		for (int i=1; i<N+1; i++) {
 			if (!isVisited[i]) {
 				isVisited[i] = true;
-				perm.add(i);
-				dfs(depth + 1);
+				dfs(depth + 1, i, sum + abs(map[bindex][0] - map[i][0]) + abs(map[bindex][1] - map[i][1]));
 				isVisited[i] = false;
-				perm.remove(perm.size()-1);
 			}
 		}
 	}
@@ -53,20 +56,15 @@ public class Solution {
 			map = new int[N+2][2];
 			isVisited = new boolean[N+2];
 			minDistance = (int)10e4;
-			perm = new ArrayList<>();
 			
 			StringTokenizer st = new StringTokenizer(br.readLine());
-			// 집
-			int homeX = Integer.parseInt(st.nextToken());
-			int homeY = Integer.parseInt(st.nextToken());
-			map[0][0] = homeX;
-			map[0][1] = homeY;
-			
 			// 회사
-			int companyX = Integer.parseInt(st.nextToken());
-			int companyY = Integer.parseInt(st.nextToken());
-			map[N+1][0] = companyX;
-			map[N+1][1] = companyY;
+			map[0][0] = Integer.parseInt(st.nextToken());
+			map[0][1] = Integer.parseInt(st.nextToken());
+			
+			// 집
+			map[N+1][0] = Integer.parseInt(st.nextToken());
+			map[N+1][1] = Integer.parseInt(st.nextToken());
 			
 			// 고객
 			for (int i=1; i<N+1; i++) {
@@ -74,19 +72,9 @@ public class Solution {
 				map[i][1] = Integer.parseInt(st.nextToken());
 			}
 
-			dfs(0);
+			dfs(0, 0, 0);
 			System.out.println("#" + tc + " " + minDistance);
-//			printArray();
 			
-		}
-	}
-	
-	static void printArray() {
-		for(int i=0; i<N+2; i++) {
-			for (int j=0; j<2; j++) {
-				System.out.print(map[i][j] + " ");
-			}
-			System.out.println();
 		}
 	}
 
