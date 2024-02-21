@@ -1,7 +1,6 @@
 import java.io.BufferedReader;
 import java.io.InputStreamReader;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 import java.util.StringTokenizer;
 
@@ -18,21 +17,25 @@ public class Main {
 	}
 
 	static int N, M;
+	// 사각 지대의 최소 크기
 	static int ans = (int) 10e8;
 	static int[][] map;
 	static int[][] temp;
 	// cctv 번호 및 정보를 담고 있는 배열 
-	// ex int[1][1] : 2번 cctv의 두번째 방향(세로)
+	// ex) int[1][1] : 2번 cctv의 두번째 방향(세로)
 	static int[][] cctv = {{0, 1, 2, 3}, {0, 1}, {0, 1, 2, 3}, {0, 1, 2, 3}, {0}};
+	// 각 cctv의 방향에 대한 체크 여부
 	static boolean[][] isVisited = {{false, false, false, false},
 			{false, false},
 			{false, false, false, false},
 			{false, false, false, false},
 			{false}
 	};
-	
+	// 현재 위치한 cctv정보를 담은 리스트
 	static List<Integer> cctvDetails = new ArrayList<>();
+	// 현재 위치한 cctv 및 방향 정보를 담은 리스트
 	static List<int[]> comb = new ArrayList<>();
+	// cctv가 위치한 위치 정보를 담은 리스트
 	static List<CCTV> cctvLocation = new ArrayList<>();
 	
 	static void checkUp(int startIndex, int col) {
@@ -145,10 +148,6 @@ public class Main {
 	static void makeComb(int index) {
 		// cctv 갯수에 대한 조합 완료
 		if (index == cctvDetails.size()) {
-//			for (int i=0; i<comb.size(); i++) {
-//				System.out.print(Arrays.toString(comb.get(i)) + " ");
-//			}
-//			System.out.println();
 			
 			monitor();
 			
@@ -161,9 +160,6 @@ public class Main {
 			
 			ans = Math.min(ans, count);
 			
-//			printTemp();
-//			System.out.println("count : " + count + " ans : " + ans);
-//			System.out.println();
 			return;
 		}
 		
@@ -234,19 +230,8 @@ public class Main {
 			}
 		}
 		
-//		printMap();
-		
 		makeComb(0);
 		System.out.println(ans);
-	}
-
-	static void printMap() {
-		for (int i=0; i<N; i++) {
-			for (int j=0; j<M; j++) {
-				System.out.print(map[i][j] + " ");
-			}
-			System.out.println();
-		}
 	}
 	
 	static void copyMap() {
@@ -256,13 +241,5 @@ public class Main {
 			}
 		}
 	}
-	
-	static void printTemp() {
-		for (int i=0; i<N; i++) {
-			for (int j=0; j<M; j++) {
-				System.out.print(temp[i][j] + " ");
-			}
-			System.out.println();
-		}
-	}
+
 }
