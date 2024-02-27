@@ -39,7 +39,7 @@ public class Main {
             int nodeValue = Integer.MAX_VALUE;
 
             // 거리의 최솟값을 가지고 있는 노드의 인덱스
-            int nodeidx = -1;
+            int nodeidx = 0;
 
             // 방문하지 않은 노드 중 거리가 최소인 노드 찾기
             for (int j = 0; j < M; j++) {
@@ -49,7 +49,7 @@ public class Main {
                 }
             }
             
-            if (nodeidx == -1) break;
+//            if (nodeidx == -1) break;
             
             // 거리 최솟값 노드 방문
             isVisited[nodeidx] = true;
@@ -100,6 +100,7 @@ public class Main {
                 int z = Integer.parseInt(st.nextToken());
 
                 relation.get(x).add(new Node(y, z));
+                // 양항뱡 간선이므로 꼭 추가해줘야함!! ... 이거 빠뜨려서 한시간동안 고민했음...ㅜ
                 relation.get(y).add(new Node(x, z));
             }
 
