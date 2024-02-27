@@ -1,101 +1,100 @@
 import java.io.BufferedReader;
 import java.io.InputStreamReader;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.StringTokenizer;
 
-class Node {
-	int idx;
-	int value;
-	
-	Node(int idx, int value) {
-		this.idx = idx;
-		this.value = value;
-	}
-}
-
 public class Main {
+	
+	static class Node {
+		int nextIndex;
+		int weight;
+		
+		public Node(int nextIndex, int weight) {
+			this.nextIndex = nextIndex;
+			this.weight = weight;
+		}
+	}
 
 	static int V, E, K;
-	static List<List<Node>> nodes = new ArrayList<>();
-	// 노드의 방문 여부 저장
-	static boolean[] visited;
-	// 시작노드부터 해당노드까지의 거리
+	static List<List<Node>> node = new ArrayList<>();
 	static int[] d;
+	static boolean[] isVisited;
 	
-	static void Dijkstra() {
-		// 노드 거리 초기화
-		for (int i=1; i<V+1; i++) {
-			d[i] = Integer.MAX_VALUE;
-		}
-		//  시작 노드 값 초기화
+	static void dijkstra() {
+		
+		// 시작 정점 K 부터 각 노드로 가는 최단 경로
+		Arrays.fill(d, Integer.MAX_VALUE);
+		
 		d[K] = 0;
 		
-		// 노드 갯수만큼 반복
-		for (int i=0; i<V; i++) {
+		// 모든 정점 탐색
+		for (int i=1; i<V+1; i++) {
 			
-			// 해당 노드까지의 거리의 최솟값을 찾기 위한 변수
+			// 최단경로의 간선 길이
 			int nodeValue = Integer.MAX_VALUE;
 			
-			// 거리의 최솟값을 가지고 있는 노드의 인덱스
-			int nodeidx = 0;
+			// 최단경로인 인덱스 번호
+			int nodeIndex = -1;
 			
-			// 방문하지 않는 노드 중 거리가 최소인 노드 찾기
+			// 초기값 설정 및 연결된 노드중 최단경로 선택
 			for (int j=1; j<V+1; j++) {
-				if (!visited[j] && d[j] < nodeValue) {
+				if (!isVisited[j] && d[j] < nodeValue) {
 					nodeValue = d[j];
-					nodeidx = j;
-				}
-			}
-			// 거리 최솟값 노드 방문
-			visited[nodeidx] = true;
-			
-			// 해당 노드와 연결된 모든 노드에 대해
-			for (int j=0; j<nodes.get(nodeidx).size(); j++) {
-				Node adjNode = nodes.get(nodeidx).get(j);
-				
-				// 시작 노드(K)에서 해당 노드(nodeIdx)를 거쳐 다른 노드(adjNode.idx)로 가는 것이 더 최솟값이라면
-				if (d[adjNode.idx] > d[nodeidx] + adjNode.value) {
-					// 해당 노드 거리 최솟값으로 변경
-					d[adjNode.idx] = d[nodeidx] + adjNode.value;
+					nodeIndex = j;
 				}
 			}
 			
+			if (nodeIndex == -1) break;
 			
+			isVisited[nodeIndex] = true;
+			
+			// nodeIndex와 연결된 모든 정점들에 대해 최단 경로 업데이트
+			for (int j=0; j<node.get(nodeIndex).size(); j++) {
+				Node temp = node.get(nodeIndex).get(j);
+				if (!isVisited[temp.nextIndex] && d[nodeIndex] + temp.weight < d[temp.nextIndex]) {
+					d[temp.nextIndex] = d[nodeIndex] + temp.weight;
+				}
+			}
 		}
 	}
 	
 	public static void main(String[] args) throws Exception{
 		BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
 		StringTokenizer st = new StringTokenizer(br.readLine());
-		V = Integer.parseInt(st.nextToken());
-		visited = new boolean[V+1];
-		d = new int[V+1];
 		
-
+		V = Integer.parseInt(st.nextToken());
+		// 정점번호 : 1~V
 		for (int i=0; i<V+1; i++) {
-			nodes.add(new ArrayList<>());
+			node.add(new ArrayList<>());
 		}
+		d = new int[V+1];
+		isVisited = new boolean[V+1];
+		
 		E = Integer.parseInt(st.nextToken());
 		
-		// 시작 노드
+		// 시작 정점
 		K = Integer.parseInt(br.readLine());
 		
 		for (int i=0; i<E; i++) {
 			st = new StringTokenizer(br.readLine());
-			int u = Integer.parseInt(st.nextToken());
-			int v = Integer.parseInt(st.nextToken());
-			int w = Integer.parseInt(st.nextToken());
+			int a = Integer.parseInt(st.nextToken());
+			int b = Integer.parseInt(st.nextToken());
+			int c = Integer.parseInt(st.nextToken());
 			
-			nodes.get(u).add(new Node(v, w));
+			node.get(a).add(new Node(b, c));
+			
+			// 단선 그래프이기 때문에 밑에 코드는 사용하면 안됨
+//			node.get(b).add(new Node(a, c));
 		}
 		
-		Dijkstra();
+		dijkstra();
 		
-		// 1번 노드부터 출력
-		for (int i=1; i<d.length; i++) {
+		for (int i=1; i<V+1; i++) {
 			if (d[i] == Integer.MAX_VALUE) System.out.println("INF");
 			else System.out.println(d[i]);
 		}
 	}
+
 }
