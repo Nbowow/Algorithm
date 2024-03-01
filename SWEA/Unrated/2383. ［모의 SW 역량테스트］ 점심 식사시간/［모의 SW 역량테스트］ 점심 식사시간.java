@@ -42,12 +42,6 @@ public class Solution {
             this.col = col;
         }
 
-        public Person(int row, int col, int t) {
-            this.row = row;
-            this.col = col;
-            this.t = t;
-        }
-
         @Override
         public int compareTo(Person o) {
             // 시간기준 오름차순 정렬
@@ -66,7 +60,6 @@ public class Solution {
 
     // 계단 내려가기
     static void goDown() {
-
         int[] arr1 = new int[l1.size()];
         int[] arr2 = new int[l2.size()];
 
@@ -78,6 +71,7 @@ public class Solution {
             arr2[i] = l2.get(i);
         }
 
+        // 시간 순으로 정렬
         Arrays.sort(arr1);
         Arrays.sort(arr2);
 
@@ -92,6 +86,7 @@ public class Solution {
             q2.offer(new Time(i, arr2[i]));
         }
 
+        // 각 index번호의 사람마다 내려간 계단 길이를 가지고 있는 배열
         a1 = new int[q1.size()];
         a2 = new int[q2.size()];
 
@@ -106,15 +101,11 @@ public class Solution {
                 if (q1.isEmpty() || q1.peek().time >= t) break;
 
                 Time p1 = q1.poll();
-
-                // 계단 내려갈 수 있을 때
-                if (p1.time < t) {
-                    // 계단 내려가기 시작부터 시간이 K보다 덜 지났을 때
-                    if (a1[p1.index] < k1) {
-                        // 계단 내려가는 시간 늘려주고
-                        // k1 시간이 되지 않았을 경우만 큐에 넣어줌
-                        if (++a1[p1.index] != k1) temp1.offer(p1);
-                    }
+                // 계단을 내려가며, 계단 내려가기 시작한 시각부터 시간이 K보다 덜 지났을 때
+                if (a1[p1.index] < k1) {
+                    // 계단 내려가는 시간 늘려주고
+                    // k1 시간이 되지 않았을 경우만 큐에 넣어줌
+                    if (++a1[p1.index] != k1) temp1.offer(p1);
                 }
                 // 계단 내려갈 수 없으면 그냥 저장
                 else temp1.offer(p1);
@@ -133,11 +124,9 @@ public class Solution {
                 Time p2 = q2.poll();
 
                 // 계단 내려갈 수 있을 때
-                if (p2.time < t) {
-                    if (a2[p2.index] < k2) {
-                        // k2 시간이 되지 않았을 경우에만 다시 큐에 넣어줌
-                        if (++a2[p2.index] != k2) temp2.offer(p2);
-                    }
+                if (a2[p2.index] < k2) {
+                    // k2 시간이 되지 않았을 경우에만 다시 큐에 넣어줌
+                    if (++a2[p2.index] != k2) temp2.offer(p2);
                 } else temp2.offer(p2);
             }
             while (!q2.isEmpty()) temp2.offer(q2.poll());
@@ -166,15 +155,10 @@ public class Solution {
     static void dfs(int index) {
         // 모든 사람이 계단에 도착하였을 때
         if (index == pCount) {
-
-//            System.out.println(l1.toString());
-//            System.out.println(l2.toString());
-
+            // 계단 내려감
             goDown();
             return;
         }
-
-
         Person p = persons.get(index);
 
         int x = p.row;
@@ -233,22 +217,12 @@ public class Solution {
                     }
                 }
             }
-
             dfs(0);
 
             Collections.sort(ans);
             System.out.println("#" + tc + " " + ans.get(0));
         }
 
-    }
-
-    static void printMap() {
-        for (int i=0; i<N; i++) {
-            for (int j=0; j<N; j++) {
-                System.out.print(map[i][j] + " ");
-            }
-            System.out.println();
-        }
     }
 
 }
