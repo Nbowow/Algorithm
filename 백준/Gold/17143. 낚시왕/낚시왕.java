@@ -70,8 +70,6 @@ public class Main {
             // 상어 다음 위치 설정
             s.row = dx;
             s.col = dy;
-
-//            System.out.println(i + " sharks dxdy : " + dx + " " + dy );
         }
     }
 
@@ -89,6 +87,7 @@ public class Main {
                     sharks[map[dx][dy]].isAlive = false;
                     map[dx][dy] = i; // 잡아먹음
                 }
+                // **** 이 코드 빼먹어서 틀림!!*****
                 else s.isAlive = false; // 아닐 경우 자기가 죽음
             }
 
@@ -113,9 +112,6 @@ public class Main {
 
             // 낚시왕 다음 열로 이동
             t++;
-//            System.out.println(t+ " =======");
-//            printMap();
-//            System.out.println();
         }
     }
 
@@ -151,15 +147,6 @@ public class Main {
         playGame();
 
         System.out.println(score);
-    }
-
-    static void printMap() {
-        for (int i = 0; i < R; i++) {
-            for (int j = 0; j < C; j++) {
-                System.out.print(map[i][j] + " ");
-            }
-            System.out.println();
-        }
     }
 
     // 상어의 이동방향 바꿔줌
