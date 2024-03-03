@@ -42,9 +42,6 @@ public class Main {
             l2 = new ArrayList<>();
             makeL2();
 
-//            System.out.println("=================");
-//            System.out.println(l1.toString());
-//            System.out.println(l2.toString());
             // 만든 조합에 대해 해당 구역끼리 연결될 수 있는지 검사
             parents = new int[N + 1];
             for (int i = 1; i < parents.length; i++) {
@@ -58,8 +55,6 @@ public class Main {
                     }
                 }
             }
-
-//            System.out.println("before 1 : " + Arrays.toString(parents));
             int cnt1 = 0;
             for (int i = 0; i < l1.size(); i++) {
                 if (parents[l1.get(i)] == l1.get(i)) cnt1++;
@@ -76,8 +71,6 @@ public class Main {
                     }
                 }
             }
-
-//            System.out.println("before 2 : " + Arrays.toString(parents));
             int cnt2 = 0;
             for (int i = 0; i < l2.size(); i++) {
                 if (parents[l2.get(i)] == l2.get(i)) cnt2++;
@@ -92,8 +85,6 @@ public class Main {
             for (int i = 0; i < l2.size(); i++) {
                 people2 += region[l2.get(i)];
             }
-
-//            System.out.println("l1, l2 : " + people1 + " " + people2);
 
             // 자기 자신이 부모인 경우가 하나 밖에 없어야지 다 연결된 것
             if (cnt1 <= 1 && cnt2 <= 1) ans = Math.min(ans, Math.abs(people1 - people2));
@@ -139,12 +130,6 @@ public class Main {
 
         System.out.println(ans != Integer.MAX_VALUE ? ans : -1);
 
-    }
-
-    static void printList() {
-        for (int i = 1; i < N + 1; i++) {
-            System.out.println(people.get(i).toString());
-        }
     }
 
     static void makeL2() {
