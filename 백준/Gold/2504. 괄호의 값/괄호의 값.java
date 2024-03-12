@@ -24,7 +24,7 @@ public class Main {
 			}
 			
 			else if (bracket[i] == ')') {
-				if (st.isEmpty() || st.peek() == '[') {
+				if (st.isEmpty() || st.peek() != '(') {
 					System.out.println(0);
 					System.exit(0);
 				}
@@ -37,7 +37,7 @@ public class Main {
 			}
 			
 			else if (bracket[i] == ']') {
-				if (st.isEmpty() || st.peek() == '(') {
+				if (st.isEmpty() || st.peek() != '[') {
 					System.out.println(0);
 					System.exit(0);
 				}
