@@ -1,9 +1,6 @@
 import java.io.BufferedReader;
 import java.io.InputStreamReader;
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.List;
-import java.util.StringTokenizer;
+import java.util.*;
 
 public class Main {
 
@@ -22,7 +19,7 @@ public class Main {
     static int N, M;
     static char[][] map;
     static Ball[] balls = new Ball[2];
-    static List<Integer> ans = new ArrayList<>();
+    static int ans = Integer.MAX_VALUE;
     static int[][] dxdy = {{-1, 0}, {1, 0}, {0, -1}, {0, 1}};
 
     static void go(int row, int col, char color, char[][] tempMap, int dir) {
@@ -69,13 +66,13 @@ public class Main {
                 tempMap[nextRow][nextCol] = 'B';
             }
         }
-
     }
 
     // 완탐
     // 구슬 둘중에 하나라도 들어가면 backtracking
     static void dfs(int depth, char[][] arr, int dir) {
-        if (depth == 10) return;
+        // pruning
+        if (depth == 10 || ans <= depth) return;
 
         int rrow = balls[0].row;
         int rcol = balls[0].col;
@@ -89,25 +86,19 @@ public class Main {
                 balls[1].isAlive = true;
 
                 char[][] temp1 = copyMap(arr);
-                if (rrow < brow) {
+                if (rrow < brow) { // 빨간 공이 더 위에 있을 경우 파란 공을 먼저 이동시켜줘야 함
                     go(rrow, rcol, 'R', temp1, i);
                     go(brow, bcol, 'B', temp1, i);
                 }
-                else {
+                else { // 파란 공이 더 위에 있을 경우 파란 공을 먼저 이동시켜줘야 함
                     go(brow, bcol, 'B', temp1, i);
                     go(rrow, rcol, 'R', temp1, i);
                 }
-
-//                System.out.println(depth + "=1=");
-//                printMap(temp1);
-
 
                 // 빨간공이 구멍에 들어갔을 경우
                 if (!balls[0].isAlive) {
                     // 파란공은 살아있을 경우
-                    if (balls[1].isAlive) {
-                        ans.add(depth + 1);
-                    }
+                    if (balls[1].isAlive) ans = Math.min(ans, depth + 1);
                 }
                 else { // 빨간공 안들어감
                     // 파란공이 안들어갔을 경우
@@ -130,21 +121,10 @@ public class Main {
                     go(rrow, rcol, 'R', temp2, i);
                 }
 
-//                System.out.println(depth + "=2=");
-//                printMap(temp2);
-
-
-                // 빨간공이 구멍에 들어갔을 경우
                 if (!balls[0].isAlive) {
-                    // 파란공은 살아있을 경우
-                    if (balls[1].isAlive) {
-                        ans.add(depth+1);
-                    }
-                    balls[0].isAlive = true;
-                    balls[1].isAlive = true;
+                    if (balls[1].isAlive) ans = Math.min(ans, depth + 1);
                 }
-                else { // 빨간공 안들어감
-                    // 파란공이 안들어갔을 경우
+                else {
                     if (balls[1].isAlive) dfs(depth+1, temp2, i);
                 }
 
@@ -165,21 +145,10 @@ public class Main {
                     go(rrow, rcol, 'R', temp3, i);
                 }
 
-//                System.out.println(depth + "=3=");
-//                printMap(temp3);
-
-
-                // 빨간공이 구멍에 들어갔을 경우
                 if (!balls[0].isAlive) {
-                    // 파란공은 살아있을 경우
-                    if (balls[1].isAlive) {
-                        ans.add(depth+1);
-                    }
-                    balls[0].isAlive = true;
-                    balls[1].isAlive = true;
+                    if (balls[1].isAlive) ans = Math.min(ans, depth + 1);
                 }
-                else { // 빨간공 안들어감
-                    // 파란공이 안들어갔을 경우
+                else {
                     if (balls[1].isAlive) dfs(depth+1, temp3, i);
                 }
 
@@ -200,28 +169,15 @@ public class Main {
                     go(rrow, rcol, 'R', temp4, i);
                 }
 
-//                System.out.println(depth + "=4=");
-//                printMap(temp4);
-//                System.out.println("r : " + balls[0].isAlive);
-//                System.out.println("b : " + balls[1].isAlive);
-
-                // 빨간공이 구멍에 들어갔을 경우
                 if (!balls[0].isAlive) {
-                    // 파란공은 살아있을 경우
-                    if (balls[1].isAlive) {
-                        ans.add(depth+1);
-                    }
-                    balls[0].isAlive = true;
-                    balls[1].isAlive = true;
+                    if (balls[1].isAlive) ans = Math.min(ans, depth + 1);
                 }
-                else { // 빨간공 안들어감
-                    // 파란공이 안들어갔을 경우
+                else {
                     if (balls[1].isAlive) dfs(depth+1, temp4, i);
                 }
 
             }
         }
-
     }
 
     public static void main(String[] args) throws Exception{
@@ -247,20 +203,9 @@ public class Main {
 
         dfs(0, map, -1);
 
-
-        if (ans.size() == 0) System.out.println(-1);
+        if (ans == Integer.MAX_VALUE) System.out.println(-1);
         else {
-            Collections.sort(ans);
-            System.out.println(ans.get(0));
-        }
-    }
-
-    static void printMap(char[][] arr) {
-        for (int i=0; i<N; i++) {
-            for (int j=0; j<M; j++) {
-                System.out.print(arr[i][j] + " ");
-            }
-            System.out.println();
+            System.out.println(ans);
         }
     }
 
