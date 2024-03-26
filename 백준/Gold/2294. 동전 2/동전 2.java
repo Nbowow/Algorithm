@@ -24,9 +24,6 @@ public class Main {
 			coins[i] = Integer.parseInt(br.readLine());
 		}
 		
-		Arrays.sort(coins);
-		
-		
 		for (int i=0; i<coins.length; i++) {
 			if (coins[i] < dp.length) dp[coins[i]] = 1;
 		}
