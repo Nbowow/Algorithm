@@ -29,7 +29,8 @@ public class Main {
     static int[][] map;
     static Queue<Move> q = new ArrayDeque<>();
     static int[][] dxdy = {{-1, 0}, {1, 0}, {0, -1}, {0, 1}};
-    static Queue<Snake> sq = new ArrayDeque<>();
+//    static Queue<Snake> sq = new ArrayDeque<>();
+    static Queue<int[]> sq = new ArrayDeque<>();
 
     static void start() {
 
@@ -52,25 +53,24 @@ public class Main {
                     System.exit(0);
                 }
 
-                if (map[dx][dy] == 2) { // 해당 위치에 사과가 있다면
-                    // 뱀이 먹고 성장
-                    sq.offer(new Snake(dx, dy));
-                    map[dx][dy] = 1;
-                    sr = dx;
-                    sc = dy;
+                if (map[dx][dy] != 2) {
+                    // 뱀 꼬리위치 변경
+//                    Snake s = sq.poll();
+//                    map[s.row][s.col] = 0;
+                    int[] s = sq.poll();
+                    map[s[0]][s[1]] = 0;
                 }
-                else { // 일반 길이라면
-                    // 뱀 이동
-                    sq.offer(new Snake(dx, dy));
-                    map[dx][dy] = 1;
-                    sr = dx;
-                    sc = dy;
-                    Snake s = sq.poll();
-                    map[s.row][s.col] = 0;
-                }
+
+                // 뱀 머리 이동
+//                sq.offer(new Snake(dx, dy));
+                sq.offer(new int[]{dx, dy});
+                map[dx][dy] = 1;
+                sr = dx;
+                sc = dy;
 
             }
 
+            // 방향 전환
             dir = changeDir(dir, curDir);
 
         }
@@ -89,22 +89,20 @@ public class Main {
                 System.exit(0);
             }
 
-            if (map[dx][dy] == 2) { // 해당 위치에 사과가 있다면
-                // 뱀이 먹고 성장
-                sq.offer(new Snake(dx, dy));
-                map[dx][dy] = 1;
-                sr = dx;
-                sc = dy;
+            if (map[dx][dy] != 2) {
+                // 뱀 꼬리위치 변경
+//                Snake s = sq.poll();
+//                map[s.row][s.col] = 0;
+                int[] s = sq.poll();
+                map[s[0]][s[1]] = 0;
             }
-            else { // 일반 길이라면
-                // 뱀 이동
-                sq.offer(new Snake(dx, dy));
-                map[dx][dy] = 1;
-                sr = dx;
-                sc = dy;
-                Snake s = sq.poll();
-                map[s.row][s.col] = 0;
-            }
+
+            // 뱀 머리 이동
+//            sq.offer(new Snake(dx, dy));
+            sq.offer(new int[] {dx, dy});
+            map[dx][dy] = 1;
+            sr = dx;
+            sc = dy;
         }
 
     }
@@ -133,19 +131,11 @@ public class Main {
         }
 
         map[0][0] = 1; // 뱀 표시
-        sq.offer(new Snake(0, 0));
+        sq.offer(new int[]{0, 0});
+//        sq.offer(new Snake(0, 0));
         start();
 
         System.out.println(time);
-    }
-
-    static void printMap() {
-        for (int i = 0; i < N; i++) {
-            for (int j = 0; j < N; j++) {
-                System.out.print(map[i][j] + " ");
-            }
-            System.out.println();
-        }
     }
 
     static boolean isIn(int x, int y) {
@@ -173,6 +163,6 @@ public class Main {
             }
         }
 
-        return -1;
+        return -1; // can't reach
     }
 }
