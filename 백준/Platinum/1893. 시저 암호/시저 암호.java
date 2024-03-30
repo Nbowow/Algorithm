@@ -6,42 +6,45 @@ public class Main {
 
     public static void main(String[] args) throws Exception{
         BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
-        StringBuilder ans = new StringBuilder();
         StringBuilder sb;
-
 
         int N = Integer.parseInt(br.readLine());
 
         for (int tc=1; tc<=N; tc++) {
-            List<Integer> list = new ArrayList<>();
             char[] A = br.readLine().toCharArray();
             char[] W = br.readLine().toCharArray();
             char[] S = br.readLine().toCharArray();
 
             // pruning
             if (W.length > S.length) {
-                ans.append("no solution");
+                System.out.println("no solution");
                 continue;
             }
 
             // 문자열 순서 (인덱스 번호, 값)으로 저장
-            HashMap<Character, Character> map1 = new HashMap<>();
+            HashMap<Integer, Character> map1 = new HashMap<>();
             // 문자열 순서 (값, 인덱스 번호)로 저장
-//            HashMap<Character, Integer> map2 = new HashMap<>();
+            HashMap<Character, Integer> map2 = new HashMap<>();
             for (int i = 0; i < A.length; i++) {
-//                map1.put(i, A[i]);
-//                map2.put(A[i], i);
-                map1.put(A[i], A[(i+1) % A.length]);
+                map1.put(i, A[i]);
+                map2.put(A[i], i);
             }
 
-//            int[] indexTable = new int[W.length];
-//            for (int i = 0; i < W.length; i++) {
-//                indexTable[i] = map2.get(W[i]);
-//            }
+            int[] indexTable = new int[W.length];
+            for (int i = 0; i < W.length; i++) {
+                indexTable[i] = map2.get(W[i]);
+            }
 
             int count = 0;
             sb = new StringBuilder();
             for (int r=0; r<A.length; r++) { // r번 반복
+
+                // shift
+                for (int j=0; j<indexTable.length; j++) {
+                    W[j] = map1.get(indexTable[j]);
+                    indexTable[j]++;
+                    if (indexTable[j] == A.length) indexTable[j] = 0;
+                }
 
                 // 실패 함수 테이블 제작
                 int[] table = new int[W.length];
@@ -75,39 +78,29 @@ public class Main {
 
                 if (tempCount == 1) {
                     count++;
-//                    sb.append(r + " ");
-                    list.add(r);
+                    sb.append(r + " ");
                 }
 
-                // shift
-                for (int k=0; k<W.length; k++) {
-                    W[k] = map1.get(W[k]);
-                }
             }
 
 //            System.out.println(count);
             switch (count) {
                 case 0: {
-                    ans.append("no solution");
+                    System.out.println("no solution");
                     break;
                 }
                 case 1: {
-                    ans.append("unique: " + list.get(0));
+                    System.out.println("unique: " + sb);
                     break;
                 }
                 default : {
-                    ans.append("ambiguous: ");
-                    for (int n : list) {
-                        ans.append(n + " ");
-                    }
+                    System.out.println("ambiguous: " + sb);
                     break;
                 }
 
             }
-            ans.append("\n");
 
         }
-        System.out.println(ans);
     }
 
 }
