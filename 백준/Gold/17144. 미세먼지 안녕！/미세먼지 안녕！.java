@@ -25,45 +25,46 @@ public class Main {
     static int[][] dxdy = {{-1, 0}, {1, 0}, {0, -1}, {0, 1}};
 
     static void Left(int row) {
-        for (int j = C - 2; j >= 0; j--) {
-            map[row][j] = copy[row][j + 1];
+        for (int j = 0; j < C - 1 ; j++) {
+            map[row][j] = map[row][j + 1];
         }
     }
 
     static void Right(int row) {
-        for (int j = 1; j < C; j++) {
-            map[row][j] = copy[row][j - 1];
+        for (int j = C-1; j > 0; j--) {
+            map[row][j] = map[row][j - 1];
         }
     }
 
     static void Down(int srow, int frow, int col) {
-        for (int i = srow + 1; i <= frow; i++) {
-            map[i][col] = copy[i - 1][col];
+        for (int i = frow; i > srow; i--) {
+            map[i][col] = map[i - 1][col];
         }
     }
 
     static void Up(int srow, int frow, int col) {
-        for (int i = srow - 1; i >= frow; i--) {
-            map[i][col] = copy[i + 1][col];
+        for (int i = frow ; i < srow; i++) {
+            map[i][col] = map[i + 1][col];
         }
     }
     static void cleaner() {
-        copyMap();
+//        copyMap();
         // 위쪽 공기 청정기
+    	Down(0, r1x, 0);
+    	Left(0);
+    	Up(r1x, 0, C-1);
         Right(r1x);
-        Up(r1x, 0, C-1);
-        Left(0);
-        Down(0, r1x, 0);
 
         // 아래쪽 공기 청정기
-        Right(r2x);
-        Down(r2x, R - 1, C-1);
-        Left(R-1);
         Up(R - 1, r2x, 0);
-
-        // 공기청정기 위치 원상복귀
+        Left(R-1);
+        Down(r2x, R - 1, C-1);
+        Right(r2x);
+        
         map[r1x][r1y+1] = 0;
         map[r2x][r2y+1] = 0;
+        
+        // 공기청정기 위치 원상복귀
         map[r1x][r1y] = -1;
         map[r2x][r2y] = -1;
 
