@@ -62,11 +62,8 @@ public class Main {
         Up(R - 1, r2x, 0);
 
         // 공기청정기 위치 원상복귀
-        for (int i = 0; i < R; i++) {
-            for (int j = 0; j < C; j++) {
-                if (map[i][j] == -1) map[i][j] = 0;
-            }
-        }
+        map[r1x][r1y+1] = 0;
+        map[r2x][r2y+1] = 0;
         map[r1x][r1y] = -1;
         map[r2x][r2y] = -1;
 
@@ -76,7 +73,7 @@ public class Main {
         // 초기 미세먼지 확인
         for (int i = 0; i < R; i++) {
             for (int j = 0; j < C; j++) {
-                if (map[i][j] != -1 && map[i][j] != 0) {
+                if (map[i][j] > 0) {
                     d.offer(new Dust(i, j, map[i][j]));
                 }
             }
