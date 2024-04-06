@@ -21,14 +21,16 @@ public class Main {
         int[][] effectGama = new int[5][5];
         char[][] colorGama = new char[5][5];
 
+        // item : {0, 1, 2}
+        // rotate : {1, 2, 0} (0 : 0도, 1 : 90도, 2 : 180도, 3: 270도)
+        // put : {0, 1, 1} (0 : (0,0), 1 : (0, 1), 2 : (1,0), 3: (1,1))
+        // 첫번째 아이템 180도 회전해서 (0, 0)에 위치
+
         // 각 배열에 해당하는 동작 수행
         for (int i = 0; i < 3; i++) {
             int itemIdx = itemPer.get(i);
             int rotateIdx = rotatePer.get(i);
             int putIdx = putPer.get(i);
-
-            int[][] cloneEffect = copyEffect(itemIdx, rotateIdx);
-            char[][] cloneColor = copyColor(itemIdx, rotateIdx);
 
             int[] put = map.get(putIdx);
             int x = put[0];
@@ -37,12 +39,12 @@ public class Main {
             for (int a = 0; a < 4; a++) {
                 for (int b = 0; b < 4; b++) {
                     // 품질
-                    effectGama[a+x][b+y] += cloneEffect[a][b];
+                    effectGama[a+x][b+y] += effect[a][b][itemIdx][rotateIdx];
                     if (effectGama[a+x][b+y] < 0) effectGama[a+x][b+y] = 0;
                     else if (effectGama[a+x][b+y] > 9) effectGama[a+x][b+y] = 9;
 
                     // 색상 (흰색이 아닐때만 색칠)
-                    if (cloneColor[a][b] != 'W') colorGama[a+x][b+y] = cloneColor[a][b];
+                    if (color[a][b][itemIdx][rotateIdx] != 'W') colorGama[a+x][b+y] = color[a][b][itemIdx][rotateIdx];
                 }
 
             }
@@ -170,23 +172,4 @@ public class Main {
 
     }
 
-    static int[][] copyEffect(int idx, int dir) {
-        int[][] temp = new int[4][4];
-        for (int i=0; i<4; i++) {
-            for (int j = 0; j < 4; j++) {
-                temp[i][j] = effect[i][j][idx][dir];
-            }
-        }
-        return temp;
-    }
-
-    static char[][] copyColor(int idx, int dir) {
-        char[][] temp = new char[4][4];
-        for (int i=0; i<4; i++) {
-            for (int j = 0; j < 4; j++) {
-                temp[i][j] = color[i][j][idx][dir];
-            }
-        }
-        return temp;
-    }
 }
