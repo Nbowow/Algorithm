@@ -4,12 +4,11 @@ import java.util.*;
 
 public class Solution {
     static class People {
-        int row, col, totalP;
+        int row, col;
 
-        public People(int row, int col, int totalP) {
+        public People(int row, int col) {
             this.row = row;
             this.col = col;
-            this.totalP = totalP;
         }
     }
 
@@ -37,15 +36,11 @@ public class Solution {
         for (int i = 0; i < 2; i++) { // 사용자 2명
             int maxP = 0;
             for (int j = 0; j < A; j++) { // 각 충전기 중 최댓값
-                Charger cur = chargers[j];
-
                 // 충전 범위 내에 위치할 경우
-                if (Math.abs(people[i].row - cur.row) + Math.abs(people[i].col - cur.col) <= cur.C) {
-                    maxP = Math.max(maxP, cur.P);
+                if (Math.abs(people[i].row - chargers[j].row) + Math.abs(people[i].col - chargers[j].col) <= chargers[j].C) {
+                    maxP = Math.max(maxP, chargers[j].P);
                 }
             }
-
-            people[i].totalP += maxP;
             ans += maxP;
         }
 
@@ -67,13 +62,12 @@ public class Solution {
                 if (Math.abs(people[1].row - chargers[i].row) + Math.abs(people[1].col - chargers[i].col) <= chargers[i].C) {
                     charge2.add(i);
                 }
-
             }
 
             // 둘다 충전 가능할 경우
             int maxP = 0;
-            if (charge1.size() > 0 && charge2.size() > 0) {
-                // 완전 탐색으로 가능한 조합 모두 비교하여 최대 P 구하기
+            // 완전 탐색으로 가능한 조합 모두 비교하여 최대 P 구하기
+            if (charge1.size() > 0 && charge2.size() > 0) { // 둘다 충전 가능할 경우
                 for (int i : charge1) {
                     for (int j : charge2) {
                         int temp = 0;
@@ -137,24 +131,15 @@ public class Solution {
             map[0][0] = 2;
             map[9][9] = 2;
             people = new People[2];
-            people[0] = new People(0, 0, 0);
-            people[1] = new People(9, 9, 0);
+            people[0] = new People(0, 0);
+            people[1] = new People(9, 9);
 
             ans = 0;
             move();
             System.out.println("#" + tc + " " + ans);
 
         }
-
-
+        
     }
 
-    static void printMap(int[][] map) {
-        for (int i = 0; i < 10; i++) {
-            for (int j = 0; j < 10; j++) {
-                System.out.print(map[i][j] + " ");
-            }
-            System.out.println();
-        }
-    }
 }
