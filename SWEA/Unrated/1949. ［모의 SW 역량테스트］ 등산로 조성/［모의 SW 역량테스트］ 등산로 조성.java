@@ -4,7 +4,7 @@ import java.util.*;
 
 public class Solution {
 
-    static class Route implements Comparable<Route>{
+    static class Route{
         int row, col, dist, height;
         public Route(int row, int col, int dist, int height) {
             this.row = row;
@@ -12,26 +12,15 @@ public class Solution {
             this.dist = dist;
             this.height = height;
         }
-
-        // 거리기준 오름차순 정렬, 거리가 같을경우 높이기준 내림차순 정렬
-        @Override
-        public int compareTo(Route o) {
-            if (this.dist == o.dist) {
-                return Integer.compare(o.height, this.height);
-            }
-            return Integer.compare(this.dist, o.dist);
-        }
     }
 
     static class Top {
         int row, col;
-
         public Top(int row, int col) {
             this.row = row;
             this.col = col;
         }
     }
-
     static int N, K, ans;
     static int[][] map;
     static List<Top> tops;
@@ -42,12 +31,12 @@ public class Solution {
         for (int c = 0; c < tops.size(); c++) {
             Top cur = tops.get(c);
 
-            PriorityQueue<Route> pq = new PriorityQueue<>();
-            pq.offer(new Route(cur.row, cur.col, 1, map[cur.row][cur.col]));
+            Queue<Route> q = new ArrayDeque<>();
+            q.offer(new Route(cur.row, cur.col, 1, map[cur.row][cur.col]));
 
             int len = 1;
-            while (!pq.isEmpty()) {
-                Route temp = pq.poll();
+            while (!q.isEmpty()) {
+                Route temp = q.poll();
                 int x = temp.row;
                 int y = temp.col;
                 int dist = temp.dist;
@@ -61,7 +50,7 @@ public class Solution {
 
                     // 현재 높이보다 작다면 이동
                     if (map[dx][dy] < height) {
-                        pq.offer(new Route(dx, dy, dist + 1, map[dx][dy]));
+                        q.offer(new Route(dx, dy, dist + 1, map[dx][dy]));
                         len = dist + 1;
                     }
                 }
@@ -72,7 +61,6 @@ public class Solution {
     }
 
     static void game() {
-
         // 1~K 만큼 등산로 깎기
         for (int c=1; c<=K; c++) {
             // 모든 구역에 대해 깎고, 검사
@@ -118,8 +106,6 @@ public class Solution {
             game();
 
             System.out.println("#" + tc + " " + ans);
-
-
         }
     }
 
