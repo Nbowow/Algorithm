@@ -2,20 +2,14 @@ import java.io.BufferedReader;
 import java.io.InputStreamReader;
 import java.util.StringTokenizer;
 
-import javax.swing.text.AbstractDocument.LeafElement;
-
 public class Main {
 	
-	static class Item implements Comparable<Item>{
+	static class Item{
 		int weight;
 		int value;
 		public Item(int weight, int value) {
 			this.weight = weight;
 			this.value = value;
-		}
-		@Override
-		public int compareTo(Item o) {
-			return 0;
 		}
 	}
 
@@ -44,8 +38,6 @@ public class Main {
 		for (int i=1; i<K+1; i++) {
 			// 모든 물품에 대해
 			for (int j=0; j<items.length; j++) {
-				
-				
 				if (j==0) {
 					if (i >= items[j].weight) dp[i][j] = items[j].value;
 					continue;
@@ -61,15 +53,6 @@ public class Main {
 			}
 		}
 		
-//		for (int i=1; i<dp.length; i++) {
-//			System.out.print(i + " : ");
-//			for (int j=0; j<N; j++) {
-//				System.out.print(dp[i][j] + " ");
-//			}
-//			System.out.println();
-//			
-//		}
-//		System.out.println();
 		System.out.println(dp[K][N-1]);
 		
 	}
