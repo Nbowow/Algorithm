@@ -47,15 +47,15 @@ public class Main {
 				// 맵 바깥이거나 이미 도달했던 경우
 				if (!isIn(dx, dy) || c>K || isVisited[dx][dy][c]) continue;
 				
+				isVisited[dx][dy][c] = true;
+				
 				// 벽 만났을 때
 				if (map[dx][dy] == 1 && c<K) {
-					isVisited[dx][dy][c] = true;
 					q.offer(new Node(dx, dy, c + 1, cur.dis + 1));
 				}
 				
 				// 빈 공간일 때
 				if (map[dx][dy] == 0) {
-					isVisited[dx][dy][c] = true;
 					q.offer(new Node(dx, dy, c, cur.dis + 1));
 				}
 				
@@ -80,6 +80,7 @@ public class Main {
 			}
 		}
 		
+		// edge case
 		if (N == 1 && M == 1) {
 			System.out.println(1);
 		}
