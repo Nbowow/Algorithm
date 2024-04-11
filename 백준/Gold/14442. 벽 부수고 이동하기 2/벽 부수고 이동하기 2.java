@@ -4,6 +4,17 @@ import java.util.ArrayDeque;
 import java.util.Queue;
 import java.util.StringTokenizer;
 
+/*
+	@author : 남보우
+	문제 : [G3] 벽 부수고 이동하기2 - 14442번
+	제출 : 2024년 4월 11일
+	결과 : 통과
+	성능 요약 : 메모리 336144KB, 시간 1520ms
+	아이디어 : bfs와 3차원 방문배열을 이용해 풀었습니다.
+		isVisited = {row, col, 벽 부순횟수} 를 저장해
+		벽을 부순횟수에 따른 방문배열을 이용해 풀었습니다.
+*/
+
 public class Main {
 	
 	static class Node {
@@ -45,20 +56,15 @@ public class Main {
 				}
 				
 				// 맵 바깥이거나 이미 도달했던 경우
-				if (!isIn(dx, dy) || c>K || isVisited[dx][dy][c]) continue;
+				if (!isIn(dx, dy) || isVisited[dx][dy][c]) continue;
 				
 				isVisited[dx][dy][c] = true;
 				
 				// 벽 만났을 때
-				if (map[dx][dy] == 1 && c<K) {
-					q.offer(new Node(dx, dy, c + 1, cur.dis + 1));
-				}
+				if (map[dx][dy] == 1 && c<K) q.offer(new Node(dx, dy, c + 1, cur.dis + 1));
 				
 				// 빈 공간일 때
-				if (map[dx][dy] == 0) {
-					q.offer(new Node(dx, dy, c, cur.dis + 1));
-				}
-				
+				if (map[dx][dy] == 0) q.offer(new Node(dx, dy, c, cur.dis + 1));
 			}
 			
 		}
