@@ -29,8 +29,6 @@ public class Main {
                 eIdx = j;
                 ans = Math.abs(cur);
             }
-            ans = Math.min(ans, Math.abs(cur));
-
 
             // 합이 0일 경우 -> 답
             if (cur == 0) break;
