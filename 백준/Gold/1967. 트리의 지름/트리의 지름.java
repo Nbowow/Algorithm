@@ -2,6 +2,17 @@ import java.io.BufferedReader;
 import java.io.InputStreamReader;
 import java.util.*;
 
+/*
+    @author : 남보우
+    문제 : [G4] 트리의 지름 - 1967번
+    제출 : 2024년 5월 01일
+    결과 : 통과
+    성능 요약 : 메모리 117760KB, 시간 3596ms
+    아이디어 : brute force + dfs
+        모든 노드의 양 끝단에서 끝단으로의 경로를 확인하여
+        가중치가 가장 크게 나오는 경로를 구하였습니다.
+*/
+
 public class Main {
 
     static class Node implements Comparable<Node>{
@@ -20,7 +31,6 @@ public class Main {
 
     static int n, ans;
     static boolean[] isEnd;
-
     static List<Node>[] nodes;
 
     static void dfs(boolean[] visit, int idx, int totalWeight) {
@@ -51,6 +61,7 @@ public class Main {
         for (int i = 0; i < nodes.length; i++) {
             nodes[i] = new ArrayList<>();
         }
+
         for (int i = 0; i < n - 1; i++) {
             st = new StringTokenizer(br.readLine());
             int s = Integer.parseInt(st.nextToken());
@@ -72,7 +83,7 @@ public class Main {
         for (int i = 0; i < nodes.length; i++) {
             boolean[] isVisited = new boolean[n + 1];
             isVisited[i] = true;
-            dfs(isVisited, i, 0);
+            if (isEnd[i]) dfs(isVisited, i, 0);
         }
 
         System.out.println(ans);
