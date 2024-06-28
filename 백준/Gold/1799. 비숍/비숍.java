@@ -16,24 +16,23 @@ public class Main {
     }
 
     static int N;
-    static int odd_totalBishop, even_totalBishop;
     static int odd_maxBishop, even_maxBishop;
     static int[][] map;
-    static int[][] bishopMap;
     static List<Dot>[] dotList;
 
     // 대각선 방향 벡터 (좌상, 좌우만 검사)
     static int[][] dxdy = {{-1, -1}, {-1, 1}, {1, -1}, {1, 1}};
 
     static boolean isPossible(int x, int y) {
-        for (int i = 1; i <= x; i++) {
-            for (int j = 0; j < 2; j++) {
-                int tx = x + dxdy[j][0] * i;
-                int ty = y + dxdy[j][1] * i;
+        // 위에서 아래로 비숍을 놓기 때문에 대각선 위쪽만 검사하면 된다.
+        for (int i = 0; i < 2; i++) {
+            int dx = x + dxdy[i][0];
+            int dy = y + dxdy[i][1];
 
-                if (!isIn(tx, ty)) continue;
-
-                if (map[tx][ty] == 2) return false;
+            while (isIn(dx, dy)) {
+                if (map[dx][dy] == 2) return false;
+                dx += dxdy[i][0];
+                dy += dxdy[i][1];
             }
         }
 
@@ -84,18 +83,16 @@ public class Main {
         }
 
         // 홀수 칸, 짝수 칸 나눠서 백트래킹 돌리기
-
         // 짝수 칸
-        bishopMap = new int[N][N];
         backTracking(0, 0, 0);
 
         // 홀수 칸
-        bishopMap = new int[N][N];
         backTracking(1, 0, 0);
 
         System.out.println(even_maxBishop + odd_maxBishop);
     }
 
+    // debug
     static void printMap(int[][] map) {
         for (int i = 0; i < N; i++) {
             for (int j = 0; j < N; j++) {
