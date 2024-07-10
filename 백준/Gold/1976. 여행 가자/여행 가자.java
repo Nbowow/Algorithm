@@ -1,47 +1,70 @@
 import java.io.BufferedReader;
 import java.io.InputStreamReader;
-import static java.lang.Integer.*;
-public class Main {
-	
-	
-	static int [] arr;
-	static int findParent(int x) {
-		if(arr[x]==x) return x;
-		return arr[x] = findParent(arr[x]);
-	}
-	
-	static void union(int a,int b) {
-		int ap = findParent(a);
-		int bp = findParent(b);
-		if(ap<bp) arr[ap] = bp;
-		else if(ap>bp) arr[bp] = ap;
-	}
-	
-	public static void main(String[] args) throws Exception {
-		BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
-		int n = parseInt(br.readLine());
-		arr = new int[n+1];
-		for(int i=0;i<=n;i++) arr[i] = i;
-		int k = parseInt(br.readLine());
-		String [] input;
+import java.util.Arrays;
+import java.util.StringTokenizer;
 
-		for(int i=0;i<n;i++) {
-			input = br.readLine().split(" ");
-			for(int j=0;j<n;j++) {
-				if(i==j) continue;
-				if(parseInt(input[j])==1) union(i+1,j+1);
-			}
-		}
-		input = br.readLine().split(" ");
-		boolean flag = true;
-		int parent = findParent(parseInt(input[0]));
-		for(int i=1;i<k;i++) {
-			if(parent!= findParent(parseInt(input[i]))) {
-				flag = false;
-				break;
-			}
-		}
-		if(flag) System.out.println("YES");
-		else System.out.println("NO");
-	}
+public class Main {
+
+    static int N, M;
+    static int[][] map;
+    static int[] route;
+    static int[] parents;
+
+    static int find(int x) {
+        if (x == parents[x]) return x;
+
+        return parents[x] = find(parents[x]);
+    }
+
+    static void union(int a, int b) {
+        int pa = find(a);
+        int pb = find(b);
+
+        parents[pa] = pb;
+    }
+
+    public static void main(String[] args) throws Exception{
+        BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
+        StringTokenizer st;
+
+        N = Integer.parseInt(br.readLine());
+        M = Integer.parseInt(br.readLine());
+
+        map = new int[N][N];
+        parents = new int[N];
+        for (int i = 0; i < N; i++) {
+            parents[i] = i;
+        }
+
+        for (int i = 0; i < N; i++) {
+            st = new StringTokenizer(br.readLine());
+            for (int j = 0; j < N; j++) {
+                map[i][j] = Integer.parseInt(st.nextToken());
+                if (map[i][j] == 1) {
+                    // 경로 생성
+                    union(i, j);
+                }
+            }
+        }
+
+        route = new int[M];
+        st = new StringTokenizer(br.readLine());
+        for (int i = 0; i < M; i++) {
+            route[i] = Integer.parseInt(st.nextToken()) - 1;
+        }
+
+        // 최상단 부모 찾기
+        for (int i = 0; i < N; i++) {
+            find(i);
+        }
+
+        // 이동 가능한 경로인지 판단
+        for (int i = 0; i < M; i++) {
+            if (parents[route[i]] != parents[route[0]]) {
+                System.out.println("NO");
+                System.exit(0);
+            }
+        }
+        System.out.println("YES");
+    }
 }
