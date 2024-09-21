@@ -14,20 +14,18 @@ public class Main {
             return 0;
         }
 
-        if (dp[s1][s2][s3] != -1) {
+        if (dp[s1][s2][s3] != Integer.MAX_VALUE) {
             return dp[s1][s2][s3];
         }
 
-        int res = Integer.MAX_VALUE;
+        dp[s1][s2][s3] = Math.min(dp[s1][s2][s3], dfs3(s1 - 9, s2 - 3, s3 - 1) + 1);
+        dp[s1][s2][s3] = Math.min(dp[s1][s2][s3], dfs3(s1 - 9, s2 - 1, s3 - 3) + 1);
+        dp[s1][s2][s3] = Math.min(dp[s1][s2][s3], dfs3(s1 - 3, s2 - 9, s3 - 1) + 1);
+        dp[s1][s2][s3] = Math.min(dp[s1][s2][s3], dfs3(s1 - 3, s2 - 1, s3 - 9) + 1);
+        dp[s1][s2][s3] = Math.min(dp[s1][s2][s3], dfs3(s1 - 1, s2 - 9, s3 - 3) + 1);
+        dp[s1][s2][s3] = Math.min(dp[s1][s2][s3], dfs3(s1 - 1, s2 - 3, s3 - 9) + 1);
 
-        res = Math.min(res, dfs3(s1 - 9, s2 - 3, s3 - 1) + 1);
-        res = Math.min(res, dfs3(s1 - 9, s2 - 1, s3 - 3) + 1);
-        res = Math.min(res, dfs3(s1 - 3, s2 - 9, s3 - 1) + 1);
-        res = Math.min(res, dfs3(s1 - 3, s2 - 1, s3 - 9) + 1);
-        res = Math.min(res, dfs3(s1 - 1, s2 - 9, s3 - 3) + 1);
-        res = Math.min(res, dfs3(s1 - 1, s2 - 3, s3 - 9) + 1);
-
-        return dp[s1][s2][s3] = res;
+        return dp[s1][s2][s3];
 
     }
 
@@ -46,7 +44,7 @@ public class Main {
         dp = new int[65][65][65];
         for (int i = 0; i < 65; i++) {
             for (int j = 0; j < 65; j++) {
-                Arrays.fill(dp[i][j], -1);
+                Arrays.fill(dp[i][j], Integer.MAX_VALUE);
             }
         }
 
