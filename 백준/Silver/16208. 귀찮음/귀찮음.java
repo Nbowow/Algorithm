@@ -11,9 +11,9 @@ public class Main {
 
         StringTokenizer st = new StringTokenizer(br.readLine());
 
-        List<Integer> nums = new ArrayList<>();
+        List<Long> nums = new ArrayList<>();
         for (int i = 0; i < n; i++) {
-            nums.add(Integer.parseInt(st.nextToken()));
+            nums.add(Long.parseLong(st.nextToken()));
         }
 
         long ans = 0;
@@ -21,10 +21,11 @@ public class Main {
             Collections.sort(nums);
 
             int size = nums.size();
-            List<Integer> temp = new ArrayList<>();
+            List<Long> temp = new ArrayList<>();
             for (int i = 0; i < size / 2; i++) {
                 ans += nums.get(i) * nums.get(size - i - 1);
                 temp.add(nums.get(i)+nums.get(size - i - 1));
+//                System.out.println(nums.get(i) * nums.get(size - i - 1));
             }
 
             // 홀수
